@@ -1,0 +1,17 @@
+{
+  "name": "lerndrop-server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "multer": "^1.4.5-lts.1",
+    "adm-zip": "^0.5.10",
+    "sql.js": "^1.10.3",
+    "nanoid": "^5.0.4",
+    "dotenv": "^16.4.1"
+  }
+}

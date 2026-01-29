@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LernDrop - Lerneinheiten teilen</title>
+  <link rel="stylesheet" href="/src/style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo">LernDrop</div>
+      <p class="tagline">Teilen Sie Ihre Lerneinheiten mit einem Klick</p>
+    </header>
+
+    <div class="card">
+      <h2>ZIP-Datei hochladen</h2>
+
+      <div class="drop-zone" id="dropZone">
+        <div class="drop-zone-icon">📁</div>
+        <p class="drop-zone-text">ZIP-Datei hier ablegen oder klicken</p>
+        <p class="drop-zone-hint">Max. 50 MB | Muss index.html enthalten</p>
+        <input type="file" id="fileInput" class="file-input" accept=".zip,application/zip">
+      </div>
+
+      <div class="progress-container" id="progressContainer">
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <p class="progress-text" id="progressText">Wird hochgeladen...</p>
+      </div>
+
+      <div id="errorMessage" class="alert alert-error hidden"></div>
+    </div>
+
+    <div class="card mt-2" style="text-align: center;">
+      <h2>So funktioniert's</h2>
+      <p style="color: var(--gray-500); margin-bottom: 1rem;">
+        1. Erstellen Sie eine Lerneinheit (z.B. mit KI wie ChatGPT)<br>
+        2. Laden Sie den Ordner als ZIP hoch<br>
+        3. Teilen Sie den View-Link mit Ihren Schülern<br>
+        4. Bearbeiten oder löschen Sie die Einheit über den Edit-Link
+      </p>
+    </div>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

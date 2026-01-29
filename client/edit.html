@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Einheit bearbeiten - LernDrop</title>
+  <link rel="stylesheet" href="/src/style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo">LernDrop</div>
+    </header>
+
+    <div id="loading" class="card loading">
+      <div class="spinner"></div>
+      <p class="mt-1">Lade Einheit...</p>
+    </div>
+
+    <div id="errorCard" class="card hidden">
+      <div class="alert alert-error" id="errorText"></div>
+      <a href="/" class="btn btn-secondary">Zurück zur Startseite</a>
+    </div>
+
+    <div id="editCard" class="card hidden">
+      <h2 id="unitTitle">Einheit bearbeiten</h2>
+
+      <div class="link-group">
+        <div class="link-label">View-Link</div>
+        <div class="link-box">
+          <input type="text" id="viewUrl" class="link-input" readonly>
+          <button class="btn btn-secondary btn-small" onclick="copyLink('viewUrl')">Kopieren</button>
+        </div>
+      </div>
+
+      <div class="preview-container">
+        <h3 style="margin-bottom: 0.5rem; color: var(--gray-700);">Vorschau</h3>
+        <iframe id="previewFrame" class="preview-frame" sandbox="allow-scripts allow-same-origin"></iframe>
+      </div>
+
+      <div class="meta-info" style="margin-top: 0; border-top: none;">
+        <div class="meta-row">
+          <span>Dateien:</span>
+          <span id="fileCount">-</span>
+        </div>
+        <div class="meta-row">
+          <span>Groesse:</span>
+          <span id="fileSize">-</span>
+        </div>
+        <div class="meta-row">
+          <span>Erstellt:</span>
+          <span id="createdAt">-</span>
+        </div>
+        <div class="meta-row">
+          <span>Aktualisiert:</span>
+          <span id="updatedAt">-</span>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn btn-primary" onclick="showUpdateModal()">Ersetzen</button>
+        <button class="btn btn-danger" onclick="showDeleteModal()">Löschen</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Update Modal -->
+  <div id="updateModal" class="modal-overlay">
+    <div class="modal">
+      <h3>Einheit ersetzen</h3>
+      <p>Laden Sie eine neue ZIP-Datei hoch, um die aktuelle Einheit zu ersetzen. Der View-Link bleibt gleich.</p>
+
+      <div class="drop-zone" id="updateDropZone" style="padding: 1.5rem;">
+        <p class="drop-zone-text">ZIP-Datei hier ablegen oder klicken</p>
+        <input type="file" id="updateFileInput" class="file-input" accept=".zip,application/zip">
+      </div>
+
+      <div class="progress-container" id="updateProgressContainer">
+        <div class="progress-bar">
+          <div class="progress-fill" id="updateProgressFill"></div>
+        </div>
+        <p class="progress-text" id="updateProgressText">Wird hochgeladen...</p>
+      </div>
+
+      <div id="updateError" class="alert alert-error hidden mt-1"></div>
+
+      <div class="modal-actions mt-1">
+        <button class="btn btn-secondary" onclick="hideUpdateModal()">Abbrechen</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Delete Modal -->
+  <div id="deleteModal" class="modal-overlay">
+    <div class="modal">
+      <h3>Einheit löschen?</h3>
+      <p>Diese Aktion kann nicht rückgängig gemacht werden. Alle Dateien werden dauerhaft gelöscht und der View-Link wird nicht mehr funktionieren.</p>
+
+      <div id="deleteError" class="alert alert-error hidden"></div>
+
+      <div class="modal-actions">
+        <button class="btn btn-secondary" onclick="hideDeleteModal()">Abbrechen</button>
+        <button class="btn btn-danger" id="confirmDeleteBtn" onclick="deleteUnit()">Endgültig löschen</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/src/edit.js"></script>
+</body>
+</html>

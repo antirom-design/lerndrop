@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upload erfolgreich - LernDrop</title>
+  <link rel="stylesheet" href="/src/style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo">LernDrop</div>
+    </header>
+
+    <div class="card">
+      <div class="success-header">
+        <div class="success-icon">✓</div>
+        <h1 class="success-title">Upload erfolgreich!</h1>
+        <p id="unitTitle" style="color: var(--gray-500);"></p>
+      </div>
+
+      <div class="link-group">
+        <div class="link-label">
+          View-Link <span class="badge badge-public">Öffentlich</span>
+        </div>
+        <p style="font-size: 0.875rem; color: var(--gray-500); margin-bottom: 0.5rem;">
+          Teilen Sie diesen Link mit Ihren Schülern
+        </p>
+        <div class="link-box">
+          <input type="text" id="viewUrl" class="link-input" readonly>
+          <button class="btn btn-primary btn-small" onclick="copyLink('viewUrl')">Kopieren</button>
+        </div>
+      </div>
+
+      <div class="link-group">
+        <div class="link-label">
+          Edit-Link <span class="badge badge-secret">Geheim</span>
+        </div>
+        <p style="font-size: 0.875rem; color: var(--gray-500); margin-bottom: 0.5rem;">
+          Bewahren Sie diesen Link sicher auf - nur damit können Sie die Einheit bearbeiten oder löschen
+        </p>
+        <div class="link-box">
+          <input type="text" id="editUrl" class="link-input" readonly>
+          <button class="btn btn-secondary btn-small" onclick="copyLink('editUrl')">Kopieren</button>
+        </div>
+      </div>
+
+      <div class="alert alert-warning">
+        <strong>Wichtig:</strong> Der Edit-Link kann nicht wiederhergestellt werden. Speichern Sie ihn an einem sicheren Ort!
+      </div>
+
+      <div class="meta-info">
+        <div class="meta-row">
+          <span>Dateien:</span>
+          <span id="fileCount">-</span>
+        </div>
+        <div class="meta-row">
+          <span>Groesse:</span>
+          <span id="fileSize">-</span>
+        </div>
+      </div>
+
+      <div class="actions mt-2">
+        <a href="/" class="btn btn-secondary">Neue Einheit hochladen</a>
+        <a id="viewLink" href="#" class="btn btn-primary" target="_blank">Einheit ansehen</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/src/success.js"></script>
+</body>
+</html>
