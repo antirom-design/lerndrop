@@ -5,6 +5,94 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Upload erfolgreich - LernDrop</title>
   <link rel="stylesheet" href="/src/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+  <style>
+    .qr-section {
+      margin-top: 1.5rem;
+      text-align: center;
+      padding: 1.5rem;
+      background: var(--gray-50);
+      border-radius: 12px;
+      border: 2px dashed var(--gray-200);
+    }
+    .qr-section h3 {
+      margin: 0 0 0.5rem 0;
+      font-size: 1rem;
+      color: var(--gray-700);
+    }
+    .qr-section p {
+      margin: 0 0 1rem 0;
+      font-size: 0.875rem;
+      color: var(--gray-500);
+    }
+    .qr-code {
+      display: inline-block;
+      padding: 1rem;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .qr-code:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    }
+    .qr-code canvas {
+      display: block;
+    }
+    .qr-hint {
+      margin-top: 0.75rem;
+      font-size: 0.75rem;
+      color: var(--gray-400);
+    }
+
+    /* Fullscreen QR Modal */
+    .qr-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255,255,255,0.98);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      cursor: pointer;
+    }
+    .qr-modal.active {
+      display: flex;
+    }
+    .qr-modal canvas {
+      max-width: 80vmin;
+      max-height: 80vmin;
+      width: 400px;
+      height: 400px;
+    }
+    .qr-modal-title {
+      margin-bottom: 2rem;
+      font-size: 1.5rem;
+      color: var(--gray-700);
+      text-align: center;
+    }
+    .qr-modal-url {
+      margin-top: 2rem;
+      font-family: monospace;
+      font-size: 1.25rem;
+      color: var(--primary);
+      word-break: break-all;
+      text-align: center;
+      max-width: 80%;
+    }
+    .qr-modal-hint {
+      position: absolute;
+      bottom: 2rem;
+      color: var(--gray-400);
+      font-size: 0.875rem;
+    }
+  </style>
 </head>
 <body>
   <div class="container">
@@ -60,11 +148,26 @@
         </div>
       </div>
 
+      <div class="qr-section">
+        <h3>QR-Code für Schüler</h3>
+        <p>Klicken für Vollbild-Ansicht (ideal für Beamer)</p>
+        <div class="qr-code" id="qrCode" onclick="showQrModal()"></div>
+        <div class="qr-hint">Schüler können den Code mit dem Handy scannen</div>
+      </div>
+
       <div class="actions mt-2">
         <a href="/" class="btn btn-secondary">Neue Einheit hochladen</a>
         <a id="viewLink" href="#" class="btn btn-primary" target="_blank">Einheit ansehen</a>
       </div>
     </div>
+  </div>
+
+  <!-- Fullscreen QR Modal -->
+  <div class="qr-modal" id="qrModal" onclick="hideQrModal()">
+    <div class="qr-modal-title">Scannen um zur Lerneinheit zu gelangen</div>
+    <canvas id="qrModalCanvas"></canvas>
+    <div class="qr-modal-url" id="qrModalUrl"></div>
+    <div class="qr-modal-hint">Klicken oder ESC zum Schliessen</div>
   </div>
 
   <script type="module" src="/src/success.js"></script>

@@ -41,3 +41,40 @@ window.copyLink = function(inputId) {
     btn.textContent = originalText;
   }, 2000);
 }
+
+// Generate QR codes
+if (viewUrl && window.QRCode) {
+  // Small QR code in the card
+  QRCode.toCanvas(document.getElementById('qrCode').appendChild(document.createElement('canvas')), viewUrl, {
+    width: 150,
+    margin: 0,
+    color: { dark: '#1f2937', light: '#ffffff' }
+  });
+
+  // Large QR code for modal
+  QRCode.toCanvas(document.getElementById('qrModalCanvas'), viewUrl, {
+    width: 400,
+    margin: 2,
+    color: { dark: '#1f2937', light: '#ffffff' }
+  });
+
+  document.getElementById('qrModalUrl').textContent = viewUrl;
+}
+
+// QR Modal functions
+window.showQrModal = function() {
+  document.getElementById('qrModal').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+window.hideQrModal = function() {
+  document.getElementById('qrModal').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+// ESC key to close modal
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    hideQrModal();
+  }
+});
