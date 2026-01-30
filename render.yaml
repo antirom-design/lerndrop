@@ -12,8 +12,8 @@ services:
       - key: NODE_ENV
         value: production
       - key: API_URL
-        sync: false
+        value: https://lerndrop-api.onrender.com
       - key: FRONTEND_URL
-        sync: false
+        value: https://dropitlikeitshot.vercel.app
       - key: MAX_FILE_SIZE_MB
         value: 50
