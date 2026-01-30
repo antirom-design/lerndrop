@@ -9,6 +9,7 @@ const updateRouter = require('./routes/update');
 const deleteRouter = require('./routes/delete');
 const serveRouter = require('./routes/serve');
 const infoRouter = require('./routes/info');
+const adminRouter = require('./routes/admin');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -28,6 +29,7 @@ app.use('/api/upload', uploadRouter);
 app.use('/api/update', updateRouter);
 app.use('/api/delete', deleteRouter);
 app.use('/api/info', infoRouter);
+app.use('/api/admin', adminRouter);
 
 // Serve uploaded units
 app.use('/v', serveRouter);
