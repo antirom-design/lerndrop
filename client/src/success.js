@@ -42,10 +42,14 @@ window.copyLink = function(inputId) {
   }, 2000);
 }
 
-// Generate QR codes
-if (viewUrl && window.QRCode) {
+// Generate QR codes - wait for library to load
+function generateQRCodes() {
+  if (!viewUrl) return;
+
   // Small QR code in the card
-  QRCode.toCanvas(document.getElementById('qrCode').appendChild(document.createElement('canvas')), viewUrl, {
+  const smallCanvas = document.createElement('canvas');
+  document.getElementById('qrCode').appendChild(smallCanvas);
+  QRCode.toCanvas(smallCanvas, viewUrl, {
     width: 150,
     margin: 0,
     color: { dark: '#1f2937', light: '#ffffff' }
@@ -59,6 +63,21 @@ if (viewUrl && window.QRCode) {
   });
 
   document.getElementById('qrModalUrl').textContent = viewUrl;
+}
+
+// Wait for QRCode library
+if (window.QRCode) {
+  generateQRCodes();
+} else {
+  // Poll for library (loaded via CDN)
+  const checkQR = setInterval(() => {
+    if (window.QRCode) {
+      clearInterval(checkQR);
+      generateQRCodes();
+    }
+  }, 50);
+  // Timeout after 5s
+  setTimeout(() => clearInterval(checkQR), 5000);
 }
 
 // QR Modal functions
