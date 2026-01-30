@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Upload erfolgreich - LernDrop</title>
   <link rel="stylesheet" href="/src/style.css">
-  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
   <style>
     .qr-section {
       margin-top: 1.5rem;
@@ -65,11 +65,13 @@
     .qr-modal.active {
       display: flex;
     }
-    .qr-modal canvas {
-      max-width: 80vmin;
-      max-height: 80vmin;
-      width: 400px;
-      height: 400px;
+    #qrModalCode {
+      background: white;
+      padding: 1rem;
+      border-radius: 12px;
+    }
+    #qrModalCode img {
+      display: block;
     }
     .qr-modal-title {
       margin-bottom: 2rem;
@@ -165,7 +167,7 @@
   <!-- Fullscreen QR Modal -->
   <div class="qr-modal" id="qrModal" onclick="hideQrModal()">
     <div class="qr-modal-title">Scannen um zur Lerneinheit zu gelangen</div>
-    <canvas id="qrModalCanvas"></canvas>
+    <div id="qrModalCode"></div>
     <div class="qr-modal-url" id="qrModalUrl"></div>
     <div class="qr-modal-hint">Klicken oder ESC zum Schliessen</div>
   </div>

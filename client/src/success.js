@@ -47,19 +47,23 @@ function generateQRCodes() {
   if (!viewUrl) return;
 
   // Small QR code in the card
-  const smallCanvas = document.createElement('canvas');
-  document.getElementById('qrCode').appendChild(smallCanvas);
-  QRCode.toCanvas(smallCanvas, viewUrl, {
+  new QRCode(document.getElementById('qrCode'), {
+    text: viewUrl,
     width: 150,
-    margin: 0,
-    color: { dark: '#1f2937', light: '#ffffff' }
+    height: 150,
+    colorDark: '#1f2937',
+    colorLight: '#ffffff',
+    correctLevel: QRCode.CorrectLevel.M
   });
 
   // Large QR code for modal
-  QRCode.toCanvas(document.getElementById('qrModalCanvas'), viewUrl, {
-    width: 400,
-    margin: 2,
-    color: { dark: '#1f2937', light: '#ffffff' }
+  new QRCode(document.getElementById('qrModalCode'), {
+    text: viewUrl,
+    width: 300,
+    height: 300,
+    colorDark: '#1f2937',
+    colorLight: '#ffffff',
+    correctLevel: QRCode.CorrectLevel.M
   });
 
   document.getElementById('qrModalUrl').textContent = viewUrl;
