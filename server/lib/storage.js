@@ -235,6 +235,31 @@ function generateDirectoryIndex(dir, unitId, relativePath = '') {
 </html>`;
 }
 
+// Files/folders to ignore (macOS artifacts)
+const IGNORED_PATTERNS = ['__MACOSX', '.DS_Store', 'Thumbs.db', '._.'];
+
+function shouldIgnore(filePath) {
+  return IGNORED_PATTERNS.some(pattern => filePath.includes(pattern));
+}
+
+function cleanupMacArtifacts(dir) {
+  if (!fs.existsSync(dir)) return;
+
+  const items = fs.readdirSync(dir);
+  for (const item of items) {
+    const fullPath = path.join(dir, item);
+
+    if (shouldIgnore(item)) {
+      fs.rmSync(fullPath, { recursive: true, force: true });
+      continue;
+    }
+
+    if (fs.statSync(fullPath).isDirectory()) {
+      cleanupMacArtifacts(fullPath);
+    }
+  }
+}
+
 function extractZip(zipBuffer, id) {
   const zip = new AdmZip(zipBuffer);
   const targetDir = getUnitPath(id);
@@ -244,8 +269,23 @@ function extractZip(zipBuffer, id) {
     fs.mkdirSync(targetDir, { recursive: true });
   }
 
-  // Extract files
-  zip.extractAllTo(targetDir, true);
+  // Extract only non-ignored files
+  const entries = zip.getEntries();
+  for (const entry of entries) {
+    if (shouldIgnore(entry.entryName)) continue;
+
+    if (entry.isDirectory) {
+      const dirPath = path.join(targetDir, entry.entryName);
+      if (!fs.existsSync(dirPath)) {
+        fs.mkdirSync(dirPath, { recursive: true });
+      }
+    } else {
+      zip.extractEntryTo(entry, targetDir, true, true);
+    }
+  }
+
+  // Cleanup any remaining macOS artifacts
+  cleanupMacArtifacts(targetDir);
 
   // If all files are in a single subdirectory, move them up
   const contents = fs.readdirSync(targetDir);
@@ -287,10 +327,13 @@ function saveFiles(files, id) {
     fs.mkdirSync(targetDir, { recursive: true });
   }
 
-  // Save each file, preserving relative paths
+  // Save each file, preserving relative paths (skip macOS artifacts)
   for (const file of files) {
     // Get relative path from webkitRelativePath or use filename
     let relativePath = file.relativePath || file.originalname;
+
+    // Skip macOS artifacts
+    if (shouldIgnore(relativePath)) continue;
 
     // Remove leading directory if all files share the same parent
     const filePath = path.join(targetDir, relativePath);
@@ -302,6 +345,9 @@ function saveFiles(files, id) {
 
     fs.writeFileSync(filePath, file.buffer);
   }
+
+  // Cleanup any remaining macOS artifacts
+  cleanupMacArtifacts(targetDir);
 
   // Flatten if all files are in a single subdirectory
   const contents = fs.readdirSync(targetDir);
